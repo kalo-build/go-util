@@ -7,8 +7,19 @@ import (
 )
 
 func ToCamelCase(input string) string {
+	if regexp.MustCompile(`^[a-z0-9]+([A-Z][a-z0-9]*)*$`).MatchString(input) {
+		return input
+	}
 	structuredInput := stringy.New(input)
+	if regexp.MustCompile(`^[A-Z][a-z0-9]+([A-Z][a-z0-9]*)*$`).MatchString(input) {
+		return structuredInput.LcFirst()
+	}
 	return structuredInput.CamelCase().Get()
+}
+
+func ToPascalCase(input string) string {
+	structuredInput := stringy.New(input)
+	return structuredInput.PascalCase().Get()
 }
 
 func ToSnakeCase(input string) string {
