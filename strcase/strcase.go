@@ -33,6 +33,16 @@ func ToSnakeCaseLower(input string) string {
 	return ToLower(snakeString)
 }
 
+func ToKebabCase(input string) string {
+	structuredInput := stringy.New(input)
+	return structuredInput.KebabCase("?", "").Get()
+}
+
+func ToKebabCaseLower(input string) string {
+	kebabString := ToKebabCase(input)
+	return ToLower(kebabString)
+}
+
 func ToLower(input string) string {
 	structuredInput := stringy.New(input)
 	return structuredInput.ToLower()

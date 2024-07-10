@@ -122,3 +122,57 @@ func (suite *StringCaseTestSuite) TestToPascalCase() {
 	suite.Equal(strcase.ToPascalCase("01_Word"), "01Word")
 	suite.Equal(strcase.ToPascalCase("Word01"), "Word01")
 }
+
+func (suite *StringCaseTestSuite) TestToKebabCase() {
+	suite.Equal(strcase.ToKebabCase("UpperCamelCase"), "Upper-Camel-Case")
+	suite.Equal(strcase.ToKebabCase("lowerCamelCase"), "lower-Camel-Case")
+
+	suite.Equal(strcase.ToKebabCase("Upper-Kebab-Case"), "Upper-Kebab-Case")
+	suite.Equal(strcase.ToKebabCase("lower-kebab-case"), "lower-kebab-case")
+
+	suite.Equal(strcase.ToKebabCase("Upper_Snake_Case"), "Upper-Snake-Case")
+	suite.Equal(strcase.ToKebabCase("lower_snake_case"), "lower-snake-case")
+
+	suite.Equal(strcase.ToKebabCase("Case_ID_Thing"), "Case-ID-Thing")
+	suite.Equal(strcase.ToKebabCase("Case_ID"), "Case-ID")
+	suite.Equal(strcase.ToKebabCase("ID_Case"), "ID-Case")
+
+	suite.Equal(strcase.ToKebabCase("Case_SQL_Thing"), "Case-SQL-Thing")
+	suite.Equal(strcase.ToKebabCase("Case_SQL"), "Case-SQL")
+	suite.Equal(strcase.ToKebabCase("SQL_Case"), "SQL-Case")
+
+	suite.Equal(strcase.ToKebabCase("Single"), "Single")
+	suite.Equal(strcase.ToKebabCase("SINGLE"), "SINGLE")
+	suite.Equal(strcase.ToKebabCase("single"), "single")
+
+	suite.Equal(strcase.ToKebabCase("num01_Word"), "num01-Word")
+	suite.Equal(strcase.ToKebabCase("01_Word"), "01-Word")
+	suite.Equal(strcase.ToKebabCase("Word01"), "Word01")
+}
+
+func (suite *StringCaseTestSuite) TestToKebabCaseLower() {
+	suite.Equal(strcase.ToKebabCaseLower("UpperCamelCase"), "upper-camel-case")
+	suite.Equal(strcase.ToKebabCaseLower("lowerCamelCase"), "lower-camel-case")
+
+	suite.Equal(strcase.ToKebabCaseLower("Upper-Kebab-Case"), "upper-kebab-case")
+	suite.Equal(strcase.ToKebabCaseLower("lower-kebab-case"), "lower-kebab-case")
+
+	suite.Equal(strcase.ToKebabCaseLower("Upper_Snake_Case"), "upper-snake-case")
+	suite.Equal(strcase.ToKebabCaseLower("lower_snake_case"), "lower-snake-case")
+
+	suite.Equal(strcase.ToKebabCaseLower("Case_ID_Thing"), "case-id-thing")
+	suite.Equal(strcase.ToKebabCaseLower("Case_ID"), "case-id")
+	suite.Equal(strcase.ToKebabCaseLower("ID_Case"), "id-case")
+
+	suite.Equal(strcase.ToKebabCaseLower("Case_SQL_Thing"), "case-sql-thing")
+	suite.Equal(strcase.ToKebabCaseLower("Case_SQL"), "case-sql")
+	suite.Equal(strcase.ToKebabCaseLower("SQL_Case"), "sql-case")
+
+	suite.Equal(strcase.ToKebabCaseLower("Single"), "single")
+	suite.Equal(strcase.ToKebabCaseLower("SINGLE"), "single")
+	suite.Equal(strcase.ToKebabCaseLower("single"), "single")
+
+	suite.Equal(strcase.ToKebabCaseLower("num01_Word"), "num01-word")
+	suite.Equal(strcase.ToKebabCaseLower("01_Word"), "01-word")
+	suite.Equal(strcase.ToKebabCaseLower("Word01"), "word01")
+}
