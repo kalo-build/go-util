@@ -1,4 +1,4 @@
-package testutils
+package assertfile
 
 import "github.com/stretchr/testify/suite"
 
