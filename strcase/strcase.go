@@ -2,6 +2,10 @@ package strcase
 
 import (
 	"regexp"
+	"strings"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 
 	"github.com/gobeam/stringy"
 )
@@ -20,6 +24,25 @@ func ToCamelCase(input string) string {
 func ToPascalCase(input string) string {
 	structuredInput := stringy.New(input)
 	return structuredInput.PascalCase().Get()
+}
+
+func ToPascalCaseTitledAbbreviations(input string) string {
+	value := ToPascalCase(input)
+	abbrRegex := regexp.MustCompile(`([A-Z]{2,})(?:([A-Z][a-z]+)|$)`)
+
+	result := abbrRegex.ReplaceAllStringFunc(value, func(match string) string {
+		parts := abbrRegex.FindStringSubmatch(match)
+		if len(parts) < 2 {
+			return match
+		}
+
+		abbr := cases.Title(language.English).String(strings.ToLower(parts[1]))
+		rest := parts[2]
+
+		return abbr + rest
+	})
+
+	return result
 }
 
 func ToSnakeCase(input string) string {

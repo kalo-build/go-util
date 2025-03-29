@@ -3,7 +3,7 @@ package strcase_test
 import (
 	"testing"
 
-	"github.com/kaloseia/go-util/strcase"
+	"github.com/kalo-build/go-util/strcase"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -121,6 +121,33 @@ func (suite *StringCaseTestSuite) TestToPascalCase() {
 	suite.Equal(strcase.ToPascalCase("num01_Word"), "Num01Word")
 	suite.Equal(strcase.ToPascalCase("01_Word"), "01Word")
 	suite.Equal(strcase.ToPascalCase("Word01"), "Word01")
+}
+
+func (suite *StringCaseTestSuite) TestToPascalCaseTitledAbbreviations() {
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("UpperCamelCase"), "UpperCamelCase")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("lowerCamelCase"), "LowerCamelCase")
+
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Upper-Kebab-Case"), "UpperKebabCase")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("lower-kebab-case"), "LowerKebabCase")
+
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Upper_Snake_Case"), "UpperSnakeCase")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("lower_snake_case"), "LowerSnakeCase")
+
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Case_ID_Thing"), "CaseIdThing")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Case_ID"), "CaseId")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("ID_Case"), "IdCase")
+
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Case_SQL_Thing"), "CaseSqlThing")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Case_SQL"), "CaseSql")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("SQL_Case"), "SqlCase")
+
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Single"), "Single")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("SINGLE"), "Single")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("single"), "Single")
+
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("num01_Word"), "Num01Word")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("01_Word"), "01Word")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Word01"), "Word01")
 }
 
 func (suite *StringCaseTestSuite) TestToKebabCase() {
