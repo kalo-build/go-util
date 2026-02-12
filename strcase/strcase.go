@@ -78,6 +78,18 @@ func separateAllCaseTransitions(input string, separator string) string {
 		if len(match) < 4 {
 			continue
 		}
+		// Only split when the character after the full match is a lowercase letter,
+		// indicating the non-uppercase char is mid-word (e.g., "SQLCase" -> "a" in
+		// "Ca" is followed by "s"). Skip when at end of string or followed by
+		// uppercase/separator — this preserves abbreviation plurals like "IDs".
+		matchEnd := match[1]
+		if matchEnd >= len(input) {
+			continue
+		}
+		nextChar := input[matchEnd]
+		if nextChar < 'a' || nextChar > 'z' {
+			continue
+		}
 		input = input[:match[2]+1] + separator + input[match[3]:]
 	}
 	return input
