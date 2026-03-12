@@ -121,22 +121,45 @@ func (suite *StringCaseTestSuite) TestToPascalCase() {
 	suite.Equal(strcase.ToPascalCase("Case_ID_Thing"), "CaseIDThing")
 	suite.Equal(strcase.ToPascalCase("Case_ID"), "CaseID")
 	suite.Equal(strcase.ToPascalCase("ID_Case"), "IDCase")
-	suite.Equal(strcase.ToPascalCase("IDs_Case"), "IDsCase")
-	suite.Equal(strcase.ToPascalCase("Case_IDs"), "CaseIDs")
-	suite.Equal(strcase.ToPascalCase("Case_IDs_Thing"), "CaseIDsThing")
-	suite.Equal(strcase.ToPascalCase("Thing_IDs_Case"), "ThingIDsCase")
+	suite.Equal(strcase.ToPascalCase("IDs_Case"), "IdsCase")
+	suite.Equal(strcase.ToPascalCase("Case_IDs"), "CaseIds")
+	suite.Equal(strcase.ToPascalCase("Case_IDs_Thing"), "CaseIdsThing")
+	suite.Equal(strcase.ToPascalCase("Thing_IDs_Case"), "ThingIdsCase")
 
 	suite.Equal(strcase.ToPascalCase("Case_SQL_Thing"), "CaseSQLThing")
 	suite.Equal(strcase.ToPascalCase("Case_SQL"), "CaseSQL")
 	suite.Equal(strcase.ToPascalCase("SQL_Case"), "SQLCase")
 
 	suite.Equal(strcase.ToPascalCase("Single"), "Single")
-	suite.Equal(strcase.ToPascalCase("SINGLE"), "SINGLE")
+	suite.Equal(strcase.ToPascalCase("SINGLE"), "Single")
 	suite.Equal(strcase.ToPascalCase("single"), "Single")
 
 	suite.Equal(strcase.ToPascalCase("num01_Word"), "Num01Word")
 	suite.Equal(strcase.ToPascalCase("01_Word"), "01Word")
 	suite.Equal(strcase.ToPascalCase("Word01"), "Word01")
+
+	// snake_case inputs with common initialisms
+	suite.Equal(strcase.ToPascalCase("user_id"), "UserID")
+	suite.Equal(strcase.ToPascalCase("id"), "ID")
+	suite.Equal(strcase.ToPascalCase("api_url"), "APIURL")
+	suite.Equal(strcase.ToPascalCase("http_url"), "HTTPURL")
+	suite.Equal(strcase.ToPascalCase("json_api"), "JSONAPI")
+	suite.Equal(strcase.ToPascalCase("company_id"), "CompanyID")
+	suite.Equal(strcase.ToPascalCase("html_css"), "HTMLCSS")
+	suite.Equal(strcase.ToPascalCase("uuid"), "UUID")
+
+	// No false positives on words containing abbreviation substrings
+	suite.Equal(strcase.ToPascalCase("sidney_todd"), "SidneyTodd")
+	suite.Equal(strcase.ToPascalCase("video"), "Video")
+	suite.Equal(strcase.ToPascalCase("idiom"), "Idiom")
+	suite.Equal(strcase.ToPascalCase("squid"), "Squid")
+	suite.Equal(strcase.ToPascalCase("rapid"), "Rapid")
+}
+
+func (suite *StringCaseTestSuite) TestToPascalCaseWithExtras() {
+	suite.Equal(strcase.ToPascalCase("org_id", "ORG"), "ORGID")
+	suite.Equal(strcase.ToPascalCase("company_sku", "SKU"), "CompanySKU")
+	suite.Equal(strcase.ToPascalCase("sku_number", "SKU"), "SKUNumber")
 }
 
 func (suite *StringCaseTestSuite) TestToPascalCaseTitledAbbreviations() {
@@ -152,10 +175,10 @@ func (suite *StringCaseTestSuite) TestToPascalCaseTitledAbbreviations() {
 	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Case_ID_Thing"), "CaseIdThing")
 	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Case_ID"), "CaseId")
 	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("ID_Case"), "IdCase")
-	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("IDs_Case"), "IDsCase")
-	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Case_IDs"), "CaseIDs")
-	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Case_IDs_Thing"), "CaseIDsThing")
-	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Thing_IDs_Case"), "ThingIDsCase")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("IDs_Case"), "IdsCase")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Case_IDs"), "CaseIds")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Case_IDs_Thing"), "CaseIdsThing")
+	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Thing_IDs_Case"), "ThingIdsCase")
 
 	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Case_SQL_Thing"), "CaseSqlThing")
 	suite.Equal(strcase.ToPascalCaseTitledAbbreviations("Case_SQL"), "CaseSql")

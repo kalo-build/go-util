@@ -3,12 +3,26 @@ package strcase
 import (
 	"regexp"
 	"strings"
+	"unicode"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
 	"github.com/gobeam/stringy"
 )
+
+// CommonInitialisms is the set of common initialisms that should remain fully
+// uppercased in PascalCase output. Derived from Go's standard initialisms list.
+var CommonInitialisms = map[string]bool{
+	"ACL": true, "API": true, "ASCII": true, "CPU": true, "CSS": true,
+	"DNS": true, "EOF": true, "GUID": true, "HTML": true, "HTTP": true,
+	"HTTPS": true, "ID": true, "IP": true, "JSON": true, "LHS": true,
+	"QPS": true, "RAM": true, "RHS": true, "RPC": true, "SLA": true,
+	"SMTP": true, "SQL": true, "SSH": true, "TCP": true, "TLS": true,
+	"TTL": true, "UDP": true, "UI": true, "UID": true, "UUID": true,
+	"URI": true, "URL": true, "UTF8": true, "VM": true, "XML": true,
+	"XMPP": true, "XSRF": true, "XSS": true,
+}
 
 func ToCamelCase(input string) string {
 	if regexp.MustCompile(`^[a-z0-9]+([A-Z][a-z0-9]*)*$`).MatchString(input) {
@@ -21,9 +35,45 @@ func ToCamelCase(input string) string {
 	return structuredInput.CamelCase().Get()
 }
 
-func ToPascalCase(input string) string {
-	structuredInput := stringy.New(input)
-	return structuredInput.PascalCase().Get()
+// ToPascalCase converts any input format (snake_case, kebab-case, camelCase,
+// PascalCase) to PascalCase while fully uppercasing word segments that match
+// known common initialisms (ID, URL, API, etc.).
+//
+// Uses whole-segment matching on underscore-delimited words, so abbreviations
+// within longer words are never matched (e.g., "sidney" does not match "ID").
+//
+// Extra abbreviations beyond CommonInitialisms can be passed via the variadic
+// parameter.
+func ToPascalCase(input string, extraAbbreviations ...string) string {
+	snaked := ToSnakeCaseLower(input)
+	segments := strings.Split(snaked, "_")
+
+	abbrs := CommonInitialisms
+	if len(extraAbbreviations) > 0 {
+		abbrs = make(map[string]bool, len(CommonInitialisms)+len(extraAbbreviations))
+		for k, v := range CommonInitialisms {
+			abbrs[k] = v
+		}
+		for _, a := range extraAbbreviations {
+			abbrs[strings.ToUpper(a)] = true
+		}
+	}
+
+	var result strings.Builder
+	for _, seg := range segments {
+		if len(seg) == 0 {
+			continue
+		}
+		upper := strings.ToUpper(seg)
+		if abbrs[upper] {
+			result.WriteString(upper)
+		} else {
+			runes := []rune(seg)
+			runes[0] = unicode.ToUpper(runes[0])
+			result.WriteString(string(runes))
+		}
+	}
+	return result.String()
 }
 
 func ToPascalCaseTitledAbbreviations(input string) string {
