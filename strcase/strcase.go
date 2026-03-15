@@ -32,6 +32,21 @@ func ToCamelCase(input string) string {
 	if regexp.MustCompile(`^[A-Z][a-z0-9]+([A-Z][a-z0-9]*)*$`).MatchString(input) {
 		return structuredInput.LcFirst()
 	}
+	if !strings.ContainsAny(input, "_- ") {
+		upperRunLen := 0
+		for _, r := range input {
+			if !unicode.IsUpper(r) {
+				break
+			}
+			upperRunLen++
+		}
+		if upperRunLen == len(input) {
+			return strings.ToLower(input)
+		}
+		if upperRunLen > 1 {
+			return strings.ToLower(input[:upperRunLen-1]) + input[upperRunLen-1:]
+		}
+	}
 	return structuredInput.CamelCase().Get()
 }
 

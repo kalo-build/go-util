@@ -106,6 +106,13 @@ func (suite *StringCaseTestSuite) TestToCamelCase() {
 	suite.Equal(strcase.ToCamelCase("num01_Word"), "num01Word")
 	suite.Equal(strcase.ToCamelCase("01_Word"), "01Word")
 	suite.Equal(strcase.ToCamelCase("Word01"), "word01")
+
+	// PascalCase inputs with initialisms
+	suite.Equal(strcase.ToCamelCase("ID"), "id")
+	suite.Equal(strcase.ToCamelCase("URL"), "url")
+	suite.Equal(strcase.ToCamelCase("IDCase"), "idCase")
+	suite.Equal(strcase.ToCamelCase("URLPath"), "urlPath")
+	suite.Equal(strcase.ToCamelCase("HTTPSServer"), "httpsServer")
 }
 
 func (suite *StringCaseTestSuite) TestToPascalCase() {
